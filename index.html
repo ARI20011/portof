@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alif Firmansari Prendje — Frontend Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080808;
+  --bg2:#0f0f0f;
+  --surface:#141414;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.13);
+  --t:#f5f5f5;
+  --t2:#999;
+  --t3:#555;
+  --r:14px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t);overflow-x:hidden;cursor:none;line-height:1.65}
+body.no-scroll{overflow:hidden}
+
+/* ───────────────── GRAIN ───────────────── */
+.grain{position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:200px;animation:grainAnim 1.2s steps(3) infinite}
+@keyframes grainAnim{0%,100%{background-position:0 0}33%{background-position:50px -40px}66%{background-position:-30px 60px}}
+
+/* ───────────────── GLOW CURSOR ───────────────── */
+#glow-cursor{
+  position:fixed;inset:0;z-index:9997;pointer-events:none;
+  background:radial-gradient(600px circle at var(--cx,50%) var(--cy,50%),rgba(255,255,255,0.028),transparent 55%);
+  transition:opacity .4s;
+}
+#cur-dot{
+  position:fixed;top:0;left:0;z-index:9999;pointer-events:none;
+  width:6px;height:6px;background:#fff;border-radius:50%;
+  transform:translate(-50%,-50%);
+  transition:width .2s,height .2s,background .2s;
+}
+#cur-ring{
+  position:fixed;top:0;left:0;z-index:9998;pointer-events:none;
+  width:36px;height:36px;border-radius:50%;
+  border:1px solid rgba(255,255,255,0.35);
+  transform:translate(-50%,-50%);
+  transition:width .25s ease,height .25s ease,border-color .25s ease,opacity .25s;
+}
+body.hover-active #cur-dot{width:4px;height:4px;background:rgba(255,255,255,0.5)}
+body.hover-active #cur-ring{width:52px;height:52px;border-color:rgba(255,255,255,0.6)}
+body.click-active #cur-dot{width:8px;height:8px}
+
+/* ───────────────── INTRO ───────────────── */
+#intro{
+  position:fixed;inset:0;z-index:9996;background:#000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1),transform .8s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+#intro.exit{opacity:0;transform:scale(1.04);pointer-events:none}
+
+.intro-bg-line{
+  position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,0.04);
+}
+.intro-bg-line:nth-child(1){top:25%}
+.intro-bg-line:nth-child(2){top:50%}
+.intro-bg-line:nth-child(3){top:75%}
+
+.intro-logo{
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.25em;
+  color:rgba(255,255,255,0.3);text-transform:uppercase;
+  margin-bottom:80px;
+  opacity:0;animation:iFadeUp .6s ease .2s forwards;
+}
+
+.intro-title-wrap{overflow:hidden;margin-bottom:10px}
+.intro-title{
+  font-size:clamp(3.5rem,9vw,9rem);font-weight:300;line-height:1;
+  letter-spacing:-3px;color:#fff;
+  transform:translateY(110%);
+  animation:iSlide .9s cubic-bezier(.22,1,.36,1) .5s forwards;
+}
+.intro-title strong{font-weight:700;display:block}
+
+.intro-sub-wrap{overflow:hidden;margin-bottom:80px}
+.intro-sub{
+  font-size:clamp(1rem,2vw,1.15rem);color:rgba(255,255,255,0.35);
+  font-weight:300;letter-spacing:.05em;
+  transform:translateY(110%);
+  animation:iSlide .9s cubic-bezier(.22,1,.36,1) .75s forwards;
+}
+
+/* Loading phase */
+.intro-loader{
+  width:240px;opacity:0;
+  animation:iLoad .3s ease 1.5s forwards;
+}
+.intro-loader-top{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;
+}
+.intro-loader-label{font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:rgba(255,255,255,0.35);text-transform:uppercase}
+.intro-loader-pct{font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(255,255,255,0.6)}
+.intro-loader-track{height:1px;background:rgba(255,255,255,0.1);position:relative;overflow:visible}
+.intro-loader-fill{
+  position:absolute;top:0;left:0;height:1px;background:#fff;width:0;
+  animation:iFill 1.8s cubic-bezier(.4,0,.2,1) 1.6s forwards;
+  box-shadow:0 0 12px 2px rgba(255,255,255,0.5);
+}
+@keyframes iFill{to{width:100%}}
+
+.intro-skip{
+  position:absolute;bottom:32px;right:32px;
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;
+  color:rgba(255,255,255,.22);text-transform:uppercase;
+  background:none;border:none;cursor:none;padding:8px 0;
+  transition:color .3s;
+}
+.intro-skip:hover{color:rgba(255,255,255,.55)}
+
+@keyframes iFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes iSlide{to{transform:translateY(0)}}
+@keyframes iLoad{to{opacity:1}}
+
+/* ───────────────── NAV ───────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:24px 48px;display:flex;align-items:center;justify-content:space-between;
+  opacity:0;transition:padding .4s ease,opacity .6s ease;
+}
+nav.visible{opacity:1}
+nav.stuck{padding:16px 48px;background:rgba(8,8,8,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--t2);text-decoration:none;letter-spacing:.04em;transition:color .25s}
+.nav-logo:hover{color:var(--t)}
+.nav-links{display:flex;gap:0;list-style:none;background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:5px}
+.nav-links a{
+  color:var(--t3);text-decoration:none;font-size:.82rem;font-weight:500;
+  padding:7px 20px;border-radius:50px;transition:all .25s;white-space:nowrap;
+}
+.nav-links a.active,.nav-links a:hover{color:var(--t);background:rgba(255,255,255,0.07)}
+.nav-cta{
+  font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.08em;
+  color:var(--t2);text-decoration:none;padding:9px 20px;
+  border:1px solid var(--border2);border-radius:50px;transition:all .3s;
+}
+.nav-cta:hover{border-color:rgba(255,255,255,0.35);color:var(--t);background:rgba(255,255,255,0.05)}
+
+/* ───────────────── LAYOUT ───────────────── */
+section{min-height:100vh;max-width:1120px;margin:0 auto;padding:140px 48px 100px}
+.s-label{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.2em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;
+}
+.s-label::before{content:'';width:20px;height:1px;background:var(--t3);display:block}
+
+/* ───────────────── REVEAL ───────────────── */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+.rv.d4{transition-delay:.32s}.rv.d5{transition-delay:.4s}.rv.d6{transition-delay:.48s}
+
+/* ───────────────── HOME ───────────────── */
+#home{
+  min-height:100vh;display:flex;align-items:center;
+  padding-top:120px;padding-bottom:80px;
+  position:relative;
+}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;width:100%}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.72rem;letter-spacing:.1em;color:var(--t2);
+  border:1px solid var(--border2);border-radius:50px;padding:7px 16px;
+  margin-bottom:32px;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--t2);animation:dotPulse 2.5s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+.hero-h1{
+  font-size:clamp(3rem,6vw,5.5rem);font-weight:300;line-height:1.02;
+  letter-spacing:-2px;margin-bottom:28px;
+}
+.hero-h1 em{font-style:normal;font-weight:700;display:block}
+.hero-h1 .dim{color:var(--t3)}
+
+.hero-p{font-size:.97rem;color:var(--t2);line-height:1.85;max-width:400px;margin-bottom:36px;font-weight:300}
+
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+.btn-solid{
+  padding:13px 28px;background:#fff;color:#000;border:none;border-radius:50px;
+  font-size:.85rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:opacity .25s,transform .25s;font-family:inherit;cursor:none;
+}
+.btn-solid:hover{opacity:.88;transform:translateY(-2px)}
+.btn-ghost{
+  padding:13px 28px;background:transparent;color:var(--t2);
+  border:1px solid var(--border2);border-radius:50px;
+  font-size:.85rem;font-weight:500;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  transition:all .3s;font-family:inherit;cursor:none;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.35);color:var(--t);transform:translateY(-2px)}
+
+.hero-metas{display:flex;gap:36px}
+.hero-meta{border-left:1px solid var(--border);padding-left:20px}
+.hero-meta-num{font-size:1.8rem;font-weight:700;color:var(--t);line-height:1;margin-bottom:4px}
+.hero-meta-label{font-size:.72rem;color:var(--t3);letter-spacing:.05em}
+
+/* ── ID CARD SIDE ── */
+.card-side{display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
+.lanyard-line{width:1.5px;height:90px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.15));margin:0 auto}
+.lanyard-hook{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.2);margin:0 auto}
+
+.id-card{
+  width:230px;background:#fff;border-radius:12px;padding:14px;
+  box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.08);
+  animation:cardFloat 6s ease-in-out infinite;
+  position:relative;
+}
+@keyframes cardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.card-inner{
+  background:#0a0a0a;border-radius:8px;aspect-ratio:3/4;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+/* Eye */
+.eye-scene{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#151515 0%,#050505 70%);position:relative}
+.eye-wrap{
+  width:108px;height:65px;background:#efefef;border-radius:50%;
+  position:relative;overflow:hidden;
+  box-shadow:inset 0 -6px 16px rgba(0,0,0,.12),0 4px 24px rgba(0,0,0,.5);
+  animation:eyeBlink 6s ease-in-out infinite;
+}
+.eye-lid{position:absolute;left:0;right:0;height:50%;background:#050505;z-index:10}
+.eye-lid.top{top:0;border-radius:50% 50% 0 0;transform-origin:top}
+.eye-lid.bottom{bottom:0;border-radius:0 0 50% 50%;transform-origin:bottom}
+@keyframes eyeBlink{0%,40%,42%,100%{transform:scaleY(1)}41%{transform:scaleY(0.04)}}
+.iris-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.iris{width:50px;height:50px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#555,#111 45%,#000 80%);
+  position:relative;transition:transform .07s ease-out;box-shadow:0 0 16px rgba(0,0,0,0.6)}
+.pupil{position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;
+  background:#000;border-radius:50%;transition:transform .07s ease-out}
+.eye-shine{position:absolute;top:20%;left:24%;width:9px;height:9px;background:rgba(255,255,255,.85);border-radius:50%}
+.eye-shine.s{width:4px;height:4px;top:54%;left:59%;opacity:.5}
+.eye-scan{position:absolute;left:0;right:0;height:1.5px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  animation:scanMove 3.5s linear infinite}
+@keyframes scanMove{0%{top:5%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:95%;opacity:0}}
+
+.card-footer{margin-top:10px;text-align:center}
+.card-name{font-size:.58rem;letter-spacing:.22em;color:#333;font-weight:700;text-transform:uppercase}
+.card-role{font-size:.5rem;letter-spacing:.1em;color:#999;margin-top:2px}
+
+.card-aura{
+  position:absolute;inset:-20px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.06),transparent 65%);
+  animation:auraBreath 4s ease-in-out infinite;pointer-events:none;
+}
+@keyframes auraBreath{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.1);opacity:1}}
+
+/* ───────────────── ABOUT ───────────────── */
+.about-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.about-h2{font-size:clamp(2.2rem,4vw,3.2rem);font-weight:300;letter-spacing:-1px;line-height:1.1;margin-bottom:28px}
+.about-h2 strong{font-weight:700}
+.about-p{font-size:.95rem;color:var(--t2);line-height:1.9;font-weight:300;margin-bottom:24px}
+.about-p strong{color:var(--t);font-weight:600}
+.quote{
+  border-left:1px solid rgba(255,255,255,0.2);padding-left:20px;
+  font-style:italic;color:var(--t3);font-size:.9rem;line-height:1.7;margin:28px 0 32px;
+}
+.about-photo{
+  position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.about-photo img{width:100%;height:100%;object-fit:cover;
+  filter:grayscale(100%) contrast(1.05);transition:filter .6s ease}
+.about-photo:hover img{filter:grayscale(50%)}
+.about-photo-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.5),transparent 50%);pointer-events:none}
+
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.stat-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px 20px;transition:border-color .3s,transform .35s cubic-bezier(.22,1,.36,1);
+  cursor:default;position:relative;overflow:hidden;
+}
+.stat-item::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.stat-item:hover::after{opacity:1}
+.stat-item:hover{border-color:var(--border2);transform:translateY(-4px)}
+.stat-num{font-size:2.2rem;font-weight:700;line-height:1;margin-bottom:6px}
+.stat-label{font-size:.7rem;color:var(--t3);letter-spacing:.12em;text-transform:uppercase}
+
+/* ───────────────── PORTFOLIO ───────────────── */
+#portfolio{text-align:center}
+.section-h2{font-size:clamp(2rem,4vw,3rem);font-weight:300;letter-spacing:-1px;margin-bottom:12px}
+.section-h2 strong{font-weight:700}
+.section-sub{color:var(--t2);font-size:.95rem;max-width:480px;margin:0 auto 44px;font-weight:300}
+
+.tabs{
+  display:inline-flex;background:var(--surface);border:1px solid var(--border);
+  border-radius:50px;padding:5px;margin-bottom:52px;gap:3px;
+}
+.tab-btn{
+  padding:9px 24px;border:none;background:transparent;color:var(--t3);
+  font-size:.83rem;font-weight:500;border-radius:50px;cursor:none;
+  transition:all .3s;font-family:inherit;
+}
+.tab-btn.active{background:rgba(255,255,255,0.09);color:var(--t)}
+
+.tab-panel{display:none;text-align:left;animation:panelIn .4s ease}
+.tab-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.proj-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;
+  overflow:hidden;transition:border-color .3s,transform .4s cubic-bezier(.22,1,.36,1);
+  cursor:none;
+}
+.proj-card:hover{border-color:var(--border2);transform:translateY(-6px)}
+.proj-thumb{aspect-ratio:16/10;overflow:hidden;background:#111;position:relative}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s ease,filter .4s ease;filter:grayscale(30%)}
+.proj-card:hover .proj-thumb img{transform:scale(1.04);filter:grayscale(0%)}
+.proj-body{padding:24px}
+.proj-tag{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.16em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:10px;display:block}
+.proj-h3{font-size:1.05rem;font-weight:600;margin-bottom:8px}
+.proj-p{font-size:.85rem;color:var(--t2);line-height:1.65;margin-bottom:20px;font-weight:300}
+.proj-foot{display:flex;justify-content:space-between;align-items:center}
+.proj-meta{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--t3)}
+.btn-sm{
+  padding:7px 16px;background:rgba(255,255,255,0.06);border:1px solid var(--border2);
+  border-radius:50px;color:var(--t2);font-size:.75rem;font-weight:500;
+  cursor:none;text-decoration:none;transition:all .25s;font-family:inherit;
+}
+.btn-sm:hover{background:rgba(255,255,255,0.12);color:var(--t);border-color:rgba(255,255,255,0.25)}
+
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.cert-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s;
+}
+.cert-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.cert-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:grayscale(40%);transition:filter .4s}
+.cert-card:hover img{filter:grayscale(0%)}
+.cert-label{padding:16px 20px;font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;color:var(--t3);text-transform:uppercase}
+
+.tech-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.tech-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
+  padding:28px 12px;text-align:center;transition:all .3s cubic-bezier(.22,1,.36,1);cursor:default;
+}
+.tech-card:hover{border-color:var(--border2);transform:translateY(-4px);background:#1a1a1a}
+.tech-icon{font-size:1.8rem;margin-bottom:10px;display:block}
+.tech-name{font-size:.72rem;color:var(--t2);font-weight:500}
+.tech-expand{
+  grid-column:span 2;cursor:none;
+  background:linear-gradient(135deg,#141414,#0f0f0f);
+  border-color:var(--border2);position:relative;overflow:hidden;
+}
+.tech-expand::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.04),transparent 65%);opacity:0;transition:opacity .3s}
+.tech-expand:hover::before,.tech-expand.open::before{opacity:1}
+.tech-expand-title{font-size:.88rem;font-weight:700;display:block;margin-bottom:4px}
+.tech-expand-hint{font-size:.65rem;color:var(--t3)}
+.expand-tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:14px;
+  max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .3s}
+.tech-expand.open .expand-tags{max-height:120px;opacity:1}
+.etag{padding:5px 12px;border:1px solid var(--border2);border-radius:50px;
+  font-size:.68rem;color:var(--t2);background:rgba(255,255,255,0.04);
+  animation:tagPop .3s ease both}
+@keyframes tagPop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+
+/* ───────────────── CONTACT ───────────────── */
+.contact-top{text-align:center;margin-bottom:56px}
+.contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:24px}
+.c-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:32px}
+.c-card-h{font-size:.9rem;font-weight:600;margin-bottom:28px;display:flex;align-items:center;gap:10px}
+.c-card-h::before{content:'';width:16px;height:1px;background:var(--t3)}
+.form-field{margin-bottom:18px}
+.form-field label{font-size:.72rem;color:var(--t3);letter-spacing:.06em;display:block;margin-bottom:8px;text-transform:uppercase;font-family:'DM Mono',monospace}
+.form-field input,.form-field textarea{
+  width:100%;background:#0d0d0d;border:1px solid var(--border);border-radius:10px;
+  padding:13px 16px;color:var(--t);font-family:inherit;font-size:.88rem;outline:none;
+  transition:border-color .25s;resize:none;
+}
+.form-field input:focus,.form-field textarea:focus{border-color:var(--border2)}
+.form-field input::placeholder,.form-field textarea::placeholder{color:var(--t3)}
+.form-field textarea{min-height:110px}
+.btn-submit{
+  width:100%;padding:14px;background:#fff;color:#000;border:none;border-radius:50px;
+  font-weight:700;font-size:.88rem;cursor:none;font-family:inherit;margin-top:8px;
+  display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .2s,transform .2s;
+}
+.btn-submit:hover{opacity:.88;transform:translateY(-1px)}
+
+.social-list{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+.soc-link{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:#0d0d0d;border:1px solid var(--border);border-radius:12px;
+  color:var(--t2);text-decoration:none;font-size:.85rem;font-weight:500;
+  transition:all .25s;cursor:none;
+}
+.soc-link:hover{border-color:var(--border2);color:var(--t);background:#111}
+.soc-link span{font-size:.7rem;color:var(--t3);transition:color .25s}
+.soc-link:hover span{color:var(--t2)}
+
+.comment-area .c-card-body{margin-top:4px}
+.comment-box{background:#0d0d0d;border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;color:var(--t);font-family:inherit;font-size:.88rem;outline:none;
+  width:100%;min-height:90px;resize:none;transition:border-color .25s;margin-bottom:12px}
+.comment-box:focus{border-color:var(--border2)}
+.comment-box::placeholder{color:var(--t3)}
+.btn-post{
+  width:100%;padding:12px;background:transparent;border:1px solid var(--border2);
+  border-radius:50px;color:var(--t2);font-size:.82rem;cursor:none;font-family:inherit;
+  transition:all .25s;margin-bottom:24px;
+}
+.btn-post:hover{border-color:rgba(255,255,255,.3);color:var(--t)}
+
+.comment-item{padding:16px;background:#0d0d0d;border:1px solid var(--border);border-radius:12px;margin-bottom:10px}
+.comment-user{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.comment-avatar{width:30px;height:30px;border-radius:50%;background:#1e1e1e;border:1px solid var(--border)}
+.comment-name{font-size:.82rem;font-weight:600}
+.comment-date{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--t3);margin-left:auto}
+.comment-text{font-size:.85rem;color:var(--t2);line-height:1.65;font-weight:300}
+
+/* ───────────────── SETTINGS ───────────────── */
+.settings-toggle{
+  position:fixed;bottom:28px;right:28px;z-index:800;
+  width:42px;height:42px;border-radius:50%;background:var(--surface);border:1px solid var(--border2);
+  color:var(--t2);font-size:1rem;cursor:none;display:grid;place-items:center;
+  transition:all .25s;font-family:inherit;
+}
+.settings-toggle:hover{border-color:rgba(255,255,255,.3);color:var(--t)}
+.settings-box{
+  position:fixed;bottom:80px;right:28px;z-index:800;width:260px;
+  background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);
+  padding:20px;opacity:0;pointer-events:none;
+  transform:translateY(6px) scale(.97);transition:all .25s cubic-bezier(.22,1,.36,1);
+}
+.settings-box.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.settings-h{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:18px}
+.settings-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--t3);
+  display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.1em}
+.settings-box input[type=range]{width:100%;accent-color:#fff;margin-bottom:16px}
+.settings-box button{
+  width:100%;padding:10px;border:1px solid var(--border2);border-radius:50px;
+  background:transparent;color:var(--t2);font-size:.75rem;cursor:none;font-family:inherit;transition:all .25s;
+}
+.settings-box button:hover{border-color:rgba(255,255,255,.3);color:var(--t)}
+.settings-note{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--t3);margin-top:14px;line-height:1.6}
+
+/* ───────────────── FOOTER ───────────────── */
+footer{border-top:1px solid var(--border);padding:40px 48px;max-width:1120px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center}
+.footer-l{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--t3);letter-spacing:.1em}
+.footer-r{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--t3);letter-spacing:.1em}
+
+/* ───────────────── RESPONSIVE ───────────────── */
+@media(max-width:1000px){
+  .home-grid,.about-layout,.contact-grid{grid-template-columns:1fr}
+  .card-side{display:none}
+  .tech-grid{grid-template-columns:repeat(3,1fr)}
+  .tech-expand{grid-column:span 3}
+  nav{padding:18px 24px}
+  nav.stuck{padding:14px 24px}
+  section{padding:120px 24px 80px}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .proj-grid,.cert-grid{grid-template-columns:1fr}
+  .tech-grid{grid-template-columns:repeat(2,1fr)}
+  .tech-expand{grid-column:span 2}
+  .stat-row{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:12px;text-align:center}
+  .nav-links a{padding:7px 14px;font-size:.78rem}
+  #cur-dot,#cur-ring,#glow-cursor{display:none}
+  body{cursor:auto}
+}
+</style>
+</head>
+<body class="no-scroll">
+
+<!-- Grain -->
+<div class="grain"></div>
+
+<!-- Glow Cursor -->
+<div id="glow-cursor"></div>
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+
+<!-- YouTube hidden -->
+<div id="ytPlayer" style="position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px" aria-hidden="true"></div>
+
+<!-- ════════════════════════════════
+  INTRO
+════════════════════════════════ -->
+<div id="intro">
+  <div class="intro-bg-line"></div>
+  <div class="intro-bg-line"></div>
+  <div class="intro-bg-line"></div>
+
+  <span class="intro-logo">Alif Firmansari Prendje — 2025</span>
+
+  <div class="intro-title-wrap">
+    <h1 class="intro-title">Welcome<br><strong>to my Portfolio</strong></h1>
+  </div>
+  <div class="intro-sub-wrap">
+    <p class="intro-sub">Frontend Developer · UI Designer · Creator</p>
+  </div>
+
+  <div class="intro-loader">
+    <div class="intro-loader-top">
+      <span class="intro-loader-label">Loading</span>
+      <span class="intro-loader-pct" id="ipc">0%</span>
+    </div>
+    <div class="intro-loader-track">
+      <div class="intro-loader-fill" id="ibar"></div>
+    </div>
+  </div>
+
+  <button class="intro-skip" id="introSkip">Skip —</button>
+</div>
+
+<!-- ════════════════════════════════
+  NAV
+════════════════════════════════ -->
+<nav id="main-nav">
+  <a href="#home" class="nav-logo">alif.prendje</a>
+  <ul class="nav-links">
+    <li><a href="#home" class="active" data-nav="home">Home</a></li>
+    <li><a href="#about" data-nav="about">About</a></li>
+    <li><a href="#portfolio" data-nav="portfolio">Portfolio</a></li>
+    <li><a href="#contact" data-nav="contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Hire me</a>
+</nav>
+
+<!-- ════════════════════════════════
+  HOME
+════════════════════════════════ -->
+<section id="home">
+  <div class="home-grid">
+    <!-- Left -->
+    <div>
+      <div class="hero-badge rv">
+        <span class="hero-badge-dot"></span>
+        Available for work
+      </div>
+      <h1 class="hero-h1 rv d1">
+        Frontend<br>
+        <em>Developer</em>
+        <span class="dim">Prendje</span>
+      </h1>
+      <p class="hero-p rv d2">
+        Menciptakan antarmuka yang bersih, modern, dan bermakna. Mengubah ide menjadi pengalaman digital yang elegan dan fungsional.
+      </p>
+      <div class="hero-actions rv d3">
+        <a href="#portfolio" class="btn-solid">View Work ↗</a>
+        <a href="#contact" class="btn-ghost">Let's Talk</a>
+      </div>
+      <div class="hero-metas rv d4">
+        <div class="hero-meta">
+          <div class="hero-meta-num">3+</div>
+          <div class="hero-meta-label">Projects</div>
+        </div>
+        <div class="hero-meta">
+          <div class="hero-meta-num">2</div>
+          <div class="hero-meta-label">Certificates</div>
+        </div>
+        <div class="hero-meta">
+          <div class="hero-meta-num">5+</div>
+          <div class="hero-meta-label">Works Done</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right — ID Card -->
+    <div class="card-side rv d2">
+      <div class="card-aura"></div>
+      <div class="lanyard-hook"></div>
+      <div class="lanyard-line"></div>
+      <div class="id-card">
+        <div class="card-inner">
+          <div class="eye-scene" id="eyeScene">
+            <div class="eye-wrap">
+              <div class="eye-lid top"></div>
+              <div class="eye-lid bottom"></div>
+              <div class="iris-wrap">
+                <div class="iris" id="iris">
+                  <div class="pupil" id="pupil"></div>
+                  <div class="eye-shine"></div>
+                  <div class="eye-shine s"></div>
+                </div>
+              </div>
+            </div>
+            <div class="eye-scan"></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="card-name">Alif Firmansari Prendje</div>
+          <div class="card-role">Frontend Developer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+  ABOUT
+════════════════════════════════ -->
+<section id="about">
+  <div class="s-label rv">About Me</div>
+  <div class="about-layout">
+    <div>
+      <h2 class="about-h2 rv d1">Alif Firmansari<br><strong>Prendje</strong></h2>
+      <p class="about-p rv d2">
+        Saya adalah <strong>Frontend Developer</strong> yang berfokus pada detail dan kualitas antarmuka. Berpengalaman membangun website yang responsif, cepat, dan estetik menggunakan teknologi modern.
+      </p>
+      <p class="about-p rv d3">
+        Dengan latar belakang PPLG dan pengalaman di kelas industri, saya menerapkan pendekatan terstruktur dalam setiap proyek — dari database hingga tampilan akhir.
+      </p>
+      <div class="quote rv d4">"Turning ideas into clean, modern, and meaningful digital experiences."</div>
+      <div class="rv d5" style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="#" class="btn-solid">Download CV</a>
+        <a href="#portfolio" class="btn-ghost">View Projects ↗</a>
+      </div>
+    </div>
+    <div class="about-photo rv d2">
+      <img src="f.jpg" alt="Alif Firmansari Prendje" onerror="this.src='';this.style.background='#1a1a1a'">
+      <div class="about-photo-overlay"></div>
+    </div>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-item rv d1">
+      <div class="stat-num">3+</div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div class="stat-item rv d2">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Certificates</div>
+    </div>
+    <div class="stat-item rv d3">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Works Delivered</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+  PORTFOLIO
+════════════════════════════════ -->
+<section id="portfolio">
+  <div class="rv">
+    <h2 class="section-h2">Portfolio <strong>Showcase</strong></h2>
+    <p class="section-sub">Projects, certifications, and the technologies I work with.</p>
+  </div>
+  <div class="rv d1">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="projects">Projects</button>
+      <button class="tab-btn" data-tab="certs">Certificates</button>
+      <button class="tab-btn" data-tab="stack">Tech Stack</button>
+    </div>
+  </div>
+
+  <div class="tab-panel active" id="panel-projects">
+    <div class="proj-grid">
+      <article class="proj-card rv d1">
+        <div class="proj-thumb">
+          <img src="SS.png" alt="OSIM" onerror="this.style.display='none'">
+        </div>
+        <div class="proj-body">
+          <span class="proj-tag">UI/UX Design</span>
+          <h3 class="proj-h3">OSIM Management System</h3>
+          <p class="proj-p">Desain UI/UX berbasis Figma untuk sistem organisasi OSIS, dilengkapi arsip digital dan manajemen kegiatan sekolah.</p>
+          <div class="proj-foot">
+            <span class="proj-meta">Figma · Prototype</span>
+            <a href="#" class="btn-sm">Details →</a>
+          </div>
+        </div>
+      </article>
+      <article class="proj-card rv d2">
+        <div class="proj-thumb">
+          <img src="SS.png" alt="Portfolio" onerror="this.style.display='none'" style="filter:brightness(.6)">
+        </div>
+        <div class="proj-body">
+          <span class="proj-tag">Web Development</span>
+          <h3 class="proj-h3">Portfolio Website</h3>
+          <p class="proj-p">Website portofolio modern dengan animasi interaktif, dark theme, dan desain profesional yang mencerminkan identitas saya.</p>
+          <div class="proj-foot">
+            <span class="proj-meta">HTML · CSS · JS</span>
+            <a href="#home" class="btn-sm">Details →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-certs">
+    <div class="cert-grid">
+      <div class="cert-card rv d1">
+        <img src="f.jpg" alt="Sertifikat PKL" onerror="this.style.display='none'">
+        <div class="cert-label">Sertifikat PKL — Praktek Kerja Lapangan</div>
+      </div>
+      <div class="cert-card rv d2">
+        <img src="SS.png" alt="Sertifikat Web" onerror="this.style.display='none'">
+        <div class="cert-label">Sertifikat Pengembangan Web</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-stack">
+    <div class="tech-grid">
+      <div class="tech-card tech-expand rv" id="techExpand" role="button" tabindex="0" aria-expanded="false">
+        <span class="tech-icon">⚡</span>
+        <span class="tech-expand-title">Frontend Magic</span>
+        <span class="tech-expand-hint">Click to expand</span>
+        <div class="expand-tags">
+          <span class="etag">HTML5</span><span class="etag">CSS3</span>
+          <span class="etag">JavaScript</span><span class="etag">Responsive</span>
+          <span class="etag">Flexbox</span><span class="etag">Grid</span>
+          <span class="etag">Animations</span><span class="etag">Figma</span>
+        </div>
+      </div>
+      <div class="tech-card rv d1"><span class="tech-icon">⚛️</span><span class="tech-name">React.js</span></div>
+      <div class="tech-card rv d2"><span class="tech-icon">🔷</span><span class="tech-name">TypeScript</span></div>
+      <div class="tech-card rv d3"><span class="tech-icon">🌊</span><span class="tech-name">Tailwind</span></div>
+      <div class="tech-card rv d1"><span class="tech-icon">🟧</span><span class="tech-name">HTML</span></div>
+      <div class="tech-card rv d2"><span class="tech-icon">🎨</span><span class="tech-name">CSS</span></div>
+      <div class="tech-card rv d3"><span class="tech-icon">🐘</span><span class="tech-name">PHP</span></div>
+      <div class="tech-card rv d4"><span class="tech-icon">🔴</span><span class="tech-name">Laravel</span></div>
+      <div class="tech-card rv d1"><span class="tech-icon">▲</span><span class="tech-name">Next.js</span></div>
+      <div class="tech-card rv d2"><span class="tech-icon">🟨</span><span class="tech-name">JavaScript</span></div>
+      <div class="tech-card rv d3"><span class="tech-icon">🐬</span><span class="tech-name">MySQL</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+  CONTACT
+════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-top rv">
+    <h2 class="section-h2">Let's <strong>Connect</strong></h2>
+    <p class="section-sub">Open for collaborations, freelance, or just a good conversation about web design.</p>
+  </div>
+  <div class="contact-grid">
+    <!-- Form -->
+    <div>
+      <div class="c-card rv d1">
+        <div class="c-card-h">Send a Message</div>
+        <form id="cForm">
+          <div class="form-field">
+            <label>Name</label>
+            <input type="text" placeholder="Your name" required>
+          </div>
+          <div class="form-field">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-field">
+            <label>Message</label>
+            <textarea placeholder="What's on your mind?" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Send Message →</button>
+        </form>
+      </div>
+
+      <div class="social-list rv d2">
+        <a href="#" class="soc-link"><span>LinkedIn</span><span>in/alif-firmansari ↗</span></a>
+        <a href="#" class="soc-link"><span>Instagram</span><span>@alif_dev ↗</span></a>
+        <a href="#" class="soc-link"><span>GitHub</span><span>github.com/alif ↗</span></a>
+        <a href="#" class="soc-link"><span>TikTok</span><span>@alif.dev ↗</span></a>
+      </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="c-card comment-area rv d2">
+      <div class="c-card-h">Leave a Comment</div>
+      <div class="form-field">
+        <label>Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <textarea class="comment-box" placeholder="Write a comment..."></textarea>
+      <button class="btn-post">Post Comment</button>
+      <div class="comment-item">
+        <div class="comment-user">
+          <div class="comment-avatar"></div>
+          <span class="comment-name">Visitor</span>
+          <span class="comment-date">Today</span>
+        </div>
+        <p class="comment-text">Website-nya keren banget! Desainnya profesional dan animasi matanya unik. Sangat mengesankan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="rv">
+  <span class="footer-l">© 2025 Alif Firmansari Prendje</span>
+  <span class="footer-r">Frontend Developer — Indonesia</span>
+</footer>
+
+<!-- Settings -->
+<button class="settings-toggle" id="stBtn">⚙</button>
+<div class="settings-box" id="stBox">
+  <div class="settings-h">Audio Settings</div>
+  <label class="settings-label">Music Volume</label>
+  <input type="range" id="mvol" min="0" max="1" step="0.01" value="0.35">
+  <label class="settings-label">SFX Volume</label>
+  <input type="range" id="svol" min="0" max="1" step="0.01" value="0.6">
+  <button id="mToggle">Mute Music</button>
+  <p class="settings-note">On Your Way — Guardian Tales OST</p>
+</div>
+
+<script>
+/* ═══════════ GLOW CURSOR ═══════════ */
+const glowEl = document.getElementById('glow-cursor');
+const dot = document.getElementById('cur-dot');
+const ring = document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  glowEl.style.setProperty('--cx',mx+'px');
+  glowEl.style.setProperty('--cy',my+'px');
+});
+(function animRing(){
+  rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,[role=button],.proj-card,.stat-item,.cert-card,.tech-card,.soc-link').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hover-active'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hover-active'));
+});
+document.addEventListener('mousedown',()=>document.body.classList.add('click-active'));
+document.addEventListener('mouseup',()=>document.body.classList.remove('click-active'));
+
+/* ═══════════ INTRO ═══════════ */
+const introEl = document.getElementById('intro');
+const ipcEl = document.getElementById('ipc');
+const skipBtn = document.getElementById('introSkip');
+let pct = 0;
+
+// Percent counter starts at 1.6s (when bar starts)
+setTimeout(()=>{
+  const t = setInterval(()=>{
+    pct = Math.min(pct+1,100);
+    if(ipcEl) ipcEl.textContent = pct+'%';
+    if(pct>=100) clearInterval(t);
+  }, 18); // 18ms × 100 = 1.8s, matches barFill duration
+}, 1600);
+
+function closeIntro(){
+  introEl.classList.add('exit');
+  document.body.classList.remove('no-scroll');
+  setTimeout(()=>{ introEl.style.display='none'; }, 900);
+  playMusic();
+}
+setTimeout(closeIntro, 3800);
+skipBtn.addEventListener('click', closeIntro);
+
+/* ═══════════ EYE TRACKING ═══════════ */
+const eyeScene = document.getElementById('eyeScene');
+const iris = document.getElementById('iris');
+const pupil = document.getElementById('pupil');
+document.addEventListener('mousemove', e=>{
+  if(!eyeScene||!iris) return;
+  const r = eyeScene.getBoundingClientRect();
+  const dx = e.clientX-(r.left+r.width/2);
+  const dy = e.clientY-(r.top+r.height/2);
+  const ang = Math.atan2(dy,dx);
+  const d = Math.min(Math.hypot(dx,dy)*.04,12);
+  iris.style.transform=`translate(${Math.cos(ang)*d}px,${Math.sin(ang)*d}px)`;
+  if(pupil) pupil.style.transform=`translate(${Math.cos(ang)*d*.3}px,${Math.sin(ang)*d*.3}px)`;
+});
+
+/* ═══════════ NAV ═══════════ */
+const nav = document.getElementById('main-nav');
+setTimeout(()=>nav.classList.add('visible'), 3900);
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',window.scrollY>60),{passive:true});
+
+const navLinks = document.querySelectorAll('.nav-links a');
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle('active',a.dataset.nav===e.target.id));
+  });
+},{threshold:.4}).observe(document.getElementById('home'));
+['about','portfolio','contact'].forEach(id=>{
+  const el=document.getElementById(id);
+  if(el) new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle('active',a.dataset.nav===id));
+    });
+  },{threshold:.35}).observe(el);
+});
+
+/* ═══════════ SCROLL REVEAL ═══════════ */
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.08}).observe(document.documentElement);
+
+const rvIO = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>rvIO.observe(el));
+
+/* ═══════════ TABS ═══════════ */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = document.getElementById('panel-'+btn.dataset.tab);
+    if(panel){ panel.classList.add('active'); panel.querySelectorAll('.rv').forEach(el=>{el.classList.remove('in');setTimeout(()=>el.classList.add('in'),60);}); }
+    sfx('click');
+  });
+});
+
+/* ═══════════ TECH EXPAND ═══════════ */
+const techEx = document.getElementById('techExpand');
+techEx?.addEventListener('click',()=>{
+  const o=techEx.classList.toggle('open');
+  techEx.setAttribute('aria-expanded',o); sfx(o?'magic':'click');
+});
+techEx?.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();techEx.click();}});
+
+/* ═══════════ CONTACT FORM ═══════════ */
+document.getElementById('cForm')?.addEventListener('submit',e=>{
+  e.preventDefault(); sfx('open');
+  const btn=e.target.querySelector('.btn-submit');
+  btn.textContent='✓ Sent!';
+  btn.style.background='#1a1a1a'; btn.style.color='#fff';
+  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.style.color='';},2500);
+});
+
+/* ═══════════ SETTINGS ═══════════ */
+document.getElementById('stBtn').addEventListener('click',()=>{
+  document.getElementById('stBox').classList.toggle('open'); sfx('click');
+});
+
+/* ═══════════ AUDIO ═══════════ */
+const MID='ynb9Qq2efsk';
+const AC=window.AudioContext||window.webkitAudioContext;
+const ac=AC?new AC():null;
+let svol=.6,musicOn=true,yt=null,ytOk=false,mStarted=false,sfxG;
+if(ac){sfxG=ac.createGain();sfxG.gain.value=svol;sfxG.connect(ac.destination);}
+function res(){if(ac?.state==='suspended')ac.resume();}
+
+function sfx(type){
+  if(!ac||!sfxG) return; res();
+  const n=ac.currentTime;
+  const d={
+    hover:{f:[480,600],t:'sine',dur:.08,v:.05},
+    click:{f:[200,160],t:'square',dur:.1,v:.08},
+    magic:{f:[523,659,784,1047],t:'sine',dur:.28,v:.08},
+    open:{f:[392,494,587],t:'triangle',dur:.22,v:.07},
+    close:{f:[494,392,330],t:'sine',dur:.18,v:.05}
+  }[type]||{f:[400],t:'sine',dur:.08,v:.05};
+  d.f.forEach((freq,i)=>{
+    const t=n+i*.04;
+    const o=ac.createOscillator(),g=ac.createGain();
+    o.type=d.t;o.frequency.value=freq;
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(d.v*svol,t+.01);
+    g.gain.exponentialRampToValueAtTime(.001,t+d.dur);
+    o.connect(g).connect(sfxG);o.start(t);o.stop(t+d.dur+.05);
+  });
+}
+
+function initYT(){
+  if(!window.YT?.Player||yt) return;
+  yt=new YT.Player('ytPlayer',{
+    height:'1',width:'1',videoId:MID,
+    playerVars:{autoplay:0,loop:1,playlist:MID,controls:0,disablekb:1,fs:0,rel:0},
+    events:{onReady(e){ytOk=true;e.target.setVolume(Math.round(+document.getElementById('mvol').value*100));if(musicOn&&mStarted)e.target.playVideo();}}
+  });
+}
+window.onYouTubeIframeAPIReady=initYT;
+if(window.YT?.Player) initYT();
+
+function playMusic(){mStarted=true;res();if(yt&&ytOk&&musicOn)yt.playVideo();}
+function pauseMusic(){if(yt&&ytOk)yt.pauseVideo();}
+
+document.getElementById('mvol').addEventListener('input',e=>{if(yt&&ytOk)yt.setVolume(Math.round(+e.target.value*100));});
+document.getElementById('svol').addEventListener('input',e=>{svol=+e.target.value;});
+document.getElementById('mToggle').addEventListener('click',function(){
+  musicOn=!musicOn; musicOn?playMusic():pauseMusic();
+  this.textContent=musicOn?'Mute Music':'Unmute Music'; sfx(musicOn?'open':'close');
+});
+
+document.querySelectorAll('a,button,[role=button],.proj-card,.stat-item,.soc-link,.tech-card,.cert-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>sfx('hover'));
+});
+</script>
+<script src="https://www.youtube.com/iframe_api" async></script>
+</body>
+</html>
