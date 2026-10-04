@@ -304,6 +304,24 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
 
 /* ID Card */
 .card-side{display:flex;flex-direction:column;align-items:center;position:relative}
+.home-photo-card{position:relative;width:260px;max-width:100%;margin:0 auto}
+.home-photo-name-banner{position:absolute;top:-22px;left:50%;transform:translateX(-50%);z-index:2;
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+  border-radius:999px;padding:10px 18px;font-family:'DM Mono',monospace;font-size:.72rem;
+  letter-spacing:.14em;color:var(--t);text-transform:uppercase;backdrop-filter:blur(12px);}
+.home-photo-wrap{position:relative;width:100%;aspect-ratio:3/4;border-radius:24px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.12);background:#111;box-shadow:0 35px 80px rgba(0,0,0,.45);}
+.home-photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease,filter .6s ease;}
+.home-photo-wrap:hover img{transform:scale(1.03);filter:contrast(1.08)}
+.home-photo-chip{position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+  border-radius:999px;padding:10px 14px;font-family:'DM Mono',monospace;font-size:.68rem;
+  letter-spacing:.12em;color:var(--t2);text-transform:uppercase;backdrop-filter:blur(12px);}
+.home-photo-chip.bottom-right{left:auto;right:16px;top:auto;bottom:16px;transform:none;}
+.home-photo-caption{position:absolute;bottom:18px;left:18px;right:18px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;pointer-events:none;}
+.home-photo-subtitle{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.75);letter-spacing:.14em;text-transform:uppercase;}
+
 .lanyard-hook{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.18);margin:0 auto}
 .lanyard-line{width:1.5px;height:88px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.14));margin:0 auto}
 .id-card{
@@ -503,7 +521,8 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
 
 /* Skill bars — animated on reveal */
 .skill-bars{display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
-.skill-item{}
+.skill-item{
+}
 .skill-head{
   display:flex;justify-content:space-between;
   font-family:'DM Mono',monospace;font-size:.62rem;
@@ -584,37 +603,77 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
 .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
 .cert-card{
   background:var(--surface);border:1px solid var(--b);border-radius:18px;overflow:hidden;
-  transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),border-color .3s;cursor:pointer;
 }
 .cert-card:hover{transform:translateY(-4px);border-color:var(--b2)}
 .cert-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;filter:grayscale(40%);transition:filter .4s}
 .cert-card:hover img{filter:grayscale(0%)}
 .cert-label{padding:14px 18px;font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.1em;color:var(--t3);text-transform:uppercase}
-.tech-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:11px}
-.tech-card{
-  background:var(--surface);border:1px solid var(--b);border-radius:var(--r);
-  padding:26px 10px;text-align:center;transition:all .3s cubic-bezier(.22,1,.36,1);cursor:default;
+.cert-modal{position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center;padding:28px}
+.cert-modal.open{display:flex}
+.cert-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.76);backdrop-filter:blur(8px)}
+.cert-modal-panel{
+  position:relative;z-index:1;width:min(860px,100%);background:#121212;border:1px solid var(--b2);
+  border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr;box-shadow:0 30px 80px rgba(0,0,0,0.55);
 }
-.tech-card:hover{border-color:var(--b2);transform:translateY(-4px);background:#181818}
-.tech-icon{font-size:1.7rem;margin-bottom:9px;display:block}
+.cert-modal-image-wrap{background:#0a0a0a}
+.cert-modal-image-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.cert-modal-content{padding:28px 26px;display:flex;flex-direction:column;gap:14px}
+.cert-modal-kicker{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.16em;color:var(--t3);text-transform:uppercase}
+.cert-modal-title{font-size:1.3rem;font-weight:700;line-height:1.25}
+.cert-modal-text{font-size:.9rem;color:var(--t2);line-height:1.75}
+.cert-modal-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto}
+.cert-modal-meta span{
+  background:rgba(255,255,255,0.04);border:1px solid var(--b2);border-radius:999px;
+  padding:7px 13px;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--t2);
+}
+.cert-modal-close{
+  position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--b2);background:#0f0f0f;color:#fff;cursor:pointer;
+}
+@media (max-width: 760px){
+  .cert-modal-panel{grid-template-columns:1fr}
+  .cert-modal-image-wrap{max-height:280px}
+}
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tech-card{
+  background:linear-gradient(180deg,#141414,#0d0d0d);border:1px solid var(--b);
+  border-radius:18px;padding:22px 14px;text-align:center;transition:all .35s cubic-bezier(.22,1,.36,1);cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.tech-card:hover{border-color:var(--b2);transform:translateY(-4px);background:linear-gradient(180deg,#1a1a1a,#0f0f0f)}
+.tech-card::after{
+  content:'';position:absolute;inset:auto 12px 0 12px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.16),transparent);opacity:.5;
+}
+.tech-icon{font-size:1.9rem;margin-bottom:10px;display:block;filter:drop-shadow(0 0 18px rgba(255,255,255,.12))}
+.tech-icon-frontend{color:#f4d35e}
+.tech-icon-backend{color:#9be7ff}
+.tech-icon-language{color:#b7f7b9}
 .tech-name{font-size:.7rem;color:var(--t2);font-weight:500}
 .tech-expand{
-  grid-column:span 2;cursor:none;border-color:var(--b2);position:relative;overflow:hidden;
+  cursor:pointer;border-color:var(--b2);position:relative;overflow:hidden;
   background:linear-gradient(135deg,#131313,#0e0e0e);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
 }
 .tech-expand::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.04),transparent 65%);opacity:0;transition:opacity .3s}
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.06),transparent 65%);opacity:0;transition:opacity .3s}
 .tech-expand:hover::before,.tech-expand.open::before{opacity:1}
 .tech-expand-title{font-size:.86rem;font-weight:700;display:block;margin-bottom:4px}
 .tech-expand-hint{font-size:.63rem;color:var(--t3)}
-.tech-expand-content{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .3s;margin-top:12px;text-align:left;padding:0 10px;font-size:.82rem;color:var(--t2);line-height:1.6;}
-.tech-expand.open .tech-expand-content{max-height:240px;opacity:1}
+.tech-expand-content{
+  max-height:0;overflow:hidden;opacity:0;transform:translateY(8px);
+  transition:max-height .45s ease,opacity .3s ease,transform .35s ease;
+  margin-top:12px;text-align:left;padding:0 10px;font-size:.82rem;color:var(--t2);line-height:1.6;
+}
+.tech-expand.open .tech-expand-content{max-height:260px;opacity:1;transform:translateY(0)}
 .expand-tags{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:13px;
   max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .3s}
-.tech-expand.open .expand-tags{max-height:120px;opacity:1}
+.tech-expand.open .expand-tags{max-height:180px;opacity:1}
 .etag{padding:4px 11px;border:1px solid var(--b2);border-radius:50px;
   font-size:.66rem;color:var(--t2);background:rgba(255,255,255,0.04);
   animation:tagPop .3s ease both}
+.skill-group{margin-bottom:10px}
+.skill-group strong{display:block;margin-bottom:5px;color:var(--t);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
 @keyframes tagPop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 
 /* ═══════════════════════════════════
@@ -666,8 +725,8 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
 .btn-post:hover{border-color:rgba(255,255,255,.28);color:var(--t)}
 .comment-item{padding:15px;background:#0c0c0c;border:1px solid var(--b);border-radius:11px;margin-bottom:9px}
 .comment-user{display:flex;align-items:center;gap:9px;margin-bottom:9px}
-.comment-avatar{width:28px;height:28px;border-radius:50%;background:#1c1c1c;border:1px solid var(--b)}
-.comment-name{font-size:.8rem;font-weight:600}
+  .comment-avatar{width:28px;height:28px;border-radius:50%;background:#1c1c1c;border:1px solid var(--b);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .comment-initials{font-size:.65rem;font-weight:700;color:var(--t);letter-spacing:.08em;text-transform:uppercase}
 .comment-date{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--t3);margin-left:auto}
 .comment-text{font-size:.84rem;color:var(--t2);line-height:1.65;font-weight:300}
 
@@ -760,7 +819,7 @@ footer{
 <div id="intro">
   <div class="intro-grid"></div>
   <div class="intro-vignette"></div>
-  <span class="intro-logo">Alif Firmansari Prendje — 2025</span>
+  <span class="intro-logo">Alif Firmansari Prendje — 2026</span>
   <div class="intro-tw">
     <h1 class="intro-title">Welcome<br><strong>to my Portfolio</strong></h1>
   </div>
@@ -818,29 +877,12 @@ footer{
     </div>
 
     <div class="card-side rv d2">
-      <div class="card-aura"></div>
-      <div class="lanyard-hook"></div>
-      <div class="lanyard-line"></div>
-      <div class="id-card">
-        <div class="card-inner">
-          <div class="eye-scene" id="eyeScene">
-            <div class="eye-wrap">
-              <div class="eye-lid top"></div>
-              <div class="eye-lid bottom"></div>
-              <div class="iris-wrap">
-                <div class="iris" id="iris">
-                  <div class="pupil" id="pupil"></div>
-                  <div class="eye-shine"></div>
-                  <div class="eye-shine s"></div>
-                </div>
-              </div>
-            </div>
-            <div class="eye-scan"></div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="card-name">Alif Firmansari Prendje</div>
-          <div class="card-role-tag">UI/UX &amp; Backend Developer</div>
+      <div class="home-photo-card">
+        <div class="home-photo-name-banner">Alif Firmansari Prendje</div>
+        <div class="home-photo-wrap">
+          <img src="img/k.jpg" alt="Foto Alif Firmansari Prendje" onerror="this.src='';this.parentElement.style.background='#1a1a1a'">
+          <div class="home-photo-chip">UI/UX</div>
+          <div class="home-photo-chip bottom-right">Jurusan: PPLG</div>
         </div>
       </div>
     </div>
@@ -865,7 +907,7 @@ footer{
       <div class="about-chip chip-2">Backend Dev</div>
 
       <div class="about-photo-wrap">
-        <img src="img/k.jpg" alt="Alif Firmansari Prendje"
+        <img src="img/n.jpeg" alt="Alif Firmansari Prendje"
           onerror="this.src='';this.parentElement.style .background='#1a1a1a'">
         <div class="about-photo-overlay"></div>
         <div class="about-photo-tag">
@@ -947,13 +989,13 @@ footer{
   <div class="tab-panel active" id="panel-projects">
     <div class="proj-grid">
       <article class="proj-card rv d1">
-        <div class="proj-thumb"><img src="img/ss.png
+        <div class="proj-thumb"><img src="img/n.png
           " alt="OSIM" onerror="this.style.display='none'"></div>
         <div class="proj-body">
-          <span class="proj-tag">UI/UX Design</span>
-          <h3 class="proj-h3">OSIM Management System</h3>
-          <p class="proj-p">Desain UI/UX berbasis Figma untuk sistem organisasi OSIS, dilengkapi arsip digital dan manajemen kegiatan sekolah.</p>
-          <div class="proj-foot"><span class="proj-meta">Figma · Prototype</span><div class="proj-actions"><a href="#" class="btn-sm">View Code</a><a href="#" class="btn-sm">Kunjungi Website</a></div></div>
+          <span class="proj-tag">Web Test</span>
+          <h3 class="proj-h3">Manga Reader </h3>
+          <p class="proj-p">Website manga no iklan no premium bebas untuk segala kategori dan di  batasi filter umur / usia .</p>
+          <div class="proj-foot"><span class="proj-meta">Figma · Prototype</span><div class="proj-actions"><a href="#" class="btn-sm">View Code</a><a href="Projeck/WEB MANGA/INDEX.HTML" class="btn-sm">Kunjungi Website</a></div></div>
         </div>
       </article>
       <article class="proj-card rv d2">
@@ -970,33 +1012,103 @@ footer{
 
   <div class="tab-panel" id="panel-certs">
     <div class="cert-grid">
-      <div class="cert-card rv d1">
-        <img src="img/f.jpg" alt="Sertifikat PKL" onerror="this.style.display='none'">
+      <div class="cert-card rv d1" role="button" tabindex="0"
+        data-title="Sertifikat PKL — Praktek Kerja Lapangan"
+        data-image="img/sertivkat 1.png"
+        data-date="2024"
+        data-issuer="SMK / Kampus"
+        data-desc="Sertifikat ini menandai pengalaman kerja praktik yang saya jalani dalam lingkungan nyata, khususnya pada bidang pengembangan aplikasi dan pemecahan masalah kerja."
+      >
+        <img src="img/sertivkat 1.png" alt="Sertifikat WENBINAR" onerror="this.style.display='none'">
         <div class="cert-label">Sertifikat PKL — Praktek Kerja Lapangan</div>
       </div>
-      <div class="cert-card rv d2">
-        <img src="img/f.jpg" alt="Sertifikat Web" onerror="this.style.display='none'">
-        <div class="cert-label">Sertifikat Pengembangan Web</div>
+      <div class="cert-card rv d2" role="button" tabindex="0"
+        data-title="Sertifikat JLPT N5 — Japanese Language Proficiency Test(Migi - Test 1)"
+        data-image="img/SnT1.png"
+        data-date="2026"
+        data-issuer="NIHON-GO"
+        data-desc="Sertifikat ini menunjukkan Bahwa saya sudah ditahap N5."
+      >
+        <img src="img/SnT1.png" alt="Sertifikat JLPT" onerror="this.style.display='none'">
+        <div class="cert-label">Sertifikat JLPT N5 — Japanese Language Proficiency Test(Migi - Test 1)</div>
       </div>
     </div>
   </div>
 
   <div class="tab-panel" id="panel-stack">
     <div class="tech-grid">
-      <div class="tech-card tech-expand rv" id="techExpand" role="button" tabindex="0" aria-expanded="false">
-        <span class="tech-icon">⚡</span>
-        <span class="tech-expand-title">Frontend Magic</span>
+      <div class="tech-card tech-expand rv" id="techFrontend" role="button" tabindex="0" aria-expanded="false">
+        <span class="tech-icon tech-icon-frontend">⚡</span>
+        <span class="tech-expand-title">Frontend</span>
         <span class="tech-expand-hint">Click to expand</span>
+        <div class="tech-expand-content">
+          <div class="skill-group">
+            <strong>Frontend Skills</strong>
+            <span>HTML5, CSS3, JavaScript, Responsive, Flexbox, Grid</span>
+          </div>
+        </div>
         <div class="expand-tags">
           <span class="etag">HTML5</span><span class="etag">CSS3</span>
           <span class="etag">JavaScript</span><span class="etag">Responsive</span>
           <span class="etag">Flexbox</span><span class="etag">Grid</span>
-          <span class="etag">Animations</span><span class="etag">Figma</span>
         </div>
       </div>
-      
-    
+
+      <div class="tech-card tech-expand rv" id="techBackend" role="button" tabindex="0" aria-expanded="false">
+        <span class="tech-icon tech-icon-backend">🛠️</span>
+        <span class="tech-expand-title">Backend</span>
+        <span class="tech-expand-hint">Click to expand</span>
+        <div class="tech-expand-content">
+          <div class="skill-group">
+            <strong>Backend Skills</strong>
+            <span>Node.js, PHP, API, Database, RESTful, Authentication</span>
+          </div>
+        </div>
+        <div class="expand-tags">
+          <span class="etag">Node.js</span><span class="etag">PHP</span>
+          <span class="etag">API</span><span class="etag">Database</span>
+          <span class="etag">RESTful</span><span class="etag">Auth</span>
+        </div>
+      </div>
+
+      <div class="tech-card tech-expand rv" id="techLanguage" role="button" tabindex="0" aria-expanded="false">
+        <span class="tech-icon tech-icon-language">🌐</span>
+        <span class="tech-expand-title">Languages</span>
+        <span class="tech-expand-hint">Click to expand</span>
+        <div class="tech-expand-content">
+          <div class="skill-group">
+            <strong>Language Skills</strong>
+            <span>English, Indonesia, Japanese</span>
+          </div>
+        </div>
+        <div class="expand-tags">
+          <span class="etag">English</span><span class="etag">Indonesia</span>
+          <span class="etag">Japanese</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
+
+<div class="cert-modal" id="certModal" aria-hidden="true">
+  <div class="cert-modal-backdrop" data-close="true"></div>
+  <div class="cert-modal-panel" role="dialog" aria-modal="true" aria-labelledby="certModalTitle">
+    <button type="button" class="cert-modal-close" id="certModalClose" aria-label="Tutup detail sertifikat">×</button>
+    <div class="cert-modal-image-wrap">
+      <img id="certModalImg" src="" alt="Detail sertifikat">
+    </div>
+    <div class="cert-modal-content">
+      <span class="cert-modal-kicker">Certificate detail</span>
+      <h3 class="cert-modal-title" id="certModalTitle">Judul sertifikat</h3>
+      <p class="cert-modal-text" id="certModalDesc">Deskripsi sertifikat</p>
+      <div class="cert-modal-meta">
+        <span id="certModalDate">2025</span>
+        <span id="certModalIssuer">Issuer</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ════════════════ CONTACT ════════════════ -->
 <section id="contact">
@@ -1009,37 +1121,30 @@ footer{
       <div class="c-card rv d1">
         <div class="c-card-h">Send a Message</div>
         <form id="cForm">
-          <div class="form-field"><label>Name</label><input type="text" placeholder="Your name" required></div>
-          <div class="form-field"><label>Email</label><input type="email" placeholder="you@example.com" required></div>
-          <div class="form-field"><label>Message</label><textarea placeholder="What's on your mind?" required></textarea></div>
+          <div class="form-field"><label>Name</label><input id="contactName" type="text" placeholder="Your name" required></div>
+          <div class="form-field"><label>Email</label><input id="contactEmail" type="email" placeholder="you@example.com" required></div>
+          <div class="form-field"><label>Message</label><textarea id="contactMessage" placeholder="What's on your mind?" required></textarea></div>
           <button type="submit" class="btn-submit">Send Message →</button>
         </form>
       </div>
       <div class="social-list rv d2">
-        <a href="#" class="soc-link"><span>LinkedIn</span><span>in/alif-firmansari ↗</span></a>
-        <a href="#" class="soc-link"><span>Instagram</span><span>@alif_dev ↗</span></a>
-        <a href="#" class="soc-link"><span>GitHub</span><span>github.com/alif ↗</span></a>
-        <a href="#" class="soc-link"><span>TikTok</span><span>@alif.dev ↗</span></a>
+        <a href="https://www.linkedin.com/jobs/" class="soc-link"><span>LinkedIn</span><span>alif-firmansari ↗</span></a>
+        <a href="https://www.instagram.com/alif11_dev/" class="soc-link"><span>Instagram</span><span>@alif_dev ↗</span></a>
+        <a href="https://github.com/ARI20011" class="soc-link"><span>GitHub</span><span>ARIFU | アリフ ↗</span></a>
+        <a href="https://www.tiktok.com/@ari245679" class="soc-link"><span>TikTok</span><span>@alif.dev ↗</span></a>
       </div>
     </div>
     <div class="c-card comment-area rv d2">
       <div class="c-card-h">Leave a Comment</div>
-      <div class="form-field"><label>Name</label><input type="text" placeholder="Your name"></div>
-      <textarea class="comment-box" placeholder="Write a comment..."></textarea>
-      <button class="btn-post">Post Comment</button>
-      <div class="comment-item">
-        <div class="comment-user">
-          <div class="comment-avatar"></div>
-          <span class="comment-name">Visitor</span>
-          <span class="comment-date">Today</span>
-        </div>
-        <p class="comment-text">Website-nya keren banget! Desainnya profesional dan animasinya unik. Sangat mengesankan.</p>
-      </div>
+      <div class="form-field"><label>Name</label><input id="commentName" type="text" placeholder="Your name"></div>
+      <textarea id="commentText" class="comment-box" placeholder="Write a comment..."></textarea>
+      <button id="commentPost" class="btn-post">Post Comment</button>
+      <div id="commentsList"></div>
     </div>
   </div>
 </section>
 
-<footer class="rv">6
+<footer class="rv">
   <span class="footer-l">© 2026 Alif Firmansari Prendje</span>
   <span class="footer-r">UI/UX &amp; Backend Developer — Indonesia</span>
 </footer>
@@ -1169,18 +1274,231 @@ document.querySelectorAll('.tab-btn').forEach(btn=>{
   });
 });
 
+/* ── Certificate modal detail ── */
+const certModal=document.getElementById('certModal');
+const certModalImg=document.getElementById('certModalImg');
+const certModalTitle=document.getElementById('certModalTitle');
+const certModalDesc=document.getElementById('certModalDesc');
+const certModalDate=document.getElementById('certModalDate');
+const certModalIssuer=document.getElementById('certModalIssuer');
+const certModalClose=document.getElementById('certModalClose');
+
+function openCertModal(card){
+  if(!certModal||!certModalImg||!certModalTitle||!certModalDesc||!certModalDate||!certModalIssuer) return;
+  certModalImg.src=card.dataset.image || '';
+  certModalImg.alt=card.dataset.title || 'Sertifikat';
+  certModalTitle.textContent=card.dataset.title || 'Sertifikat';
+  certModalDesc.textContent=card.dataset.desc || 'Detail sertifikat belum tersedia.';
+  certModalDate.textContent=card.dataset.date || '—';
+  certModalIssuer.textContent=card.dataset.issuer || '—';
+  certModal.classList.add('open');
+  certModal.setAttribute('aria-hidden','false');
+  document.body.classList.add('no-scroll');
+  sfx('open');
+}
+
+function closeCertModal(){
+  if(!certModal) return;
+  certModal.classList.remove('open');
+  certModal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('no-scroll');
+  sfx('close');
+}
+
+document.querySelectorAll('.cert-card').forEach(card=>{
+  card.addEventListener('click',()=>openCertModal(card));
+  card.addEventListener('keydown',e=>{
+    if(e.key==='Enter' || e.key===' '){
+      e.preventDefault();
+      openCertModal(card);
+    }
+  });
+});
+
+certModalClose?.addEventListener('click', closeCertModal);
+certModal?.addEventListener('click', e=>{
+  if(e.target.matches('[data-close="true"]')) closeCertModal();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && certModal?.classList.contains('open')) closeCertModal();
+});
+
 /* ── Tech expand ── */
-const techEx=document.getElementById('techExpand');
-techEx?.addEventListener('click',()=>{const o=techEx.classList.toggle('open');techEx.setAttribute('aria-expanded',o);sfx(o?'magic':'click');});
-techEx?.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();techEx.click();}});
+document.querySelectorAll('.tech-expand').forEach(card => {
+  card.addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+
+    document.querySelectorAll('.tech-expand').forEach(item => {
+      item.classList.remove('open');
+      item.setAttribute('aria-expanded', 'false');
+    });
+
+    if (!isOpen) {
+      card.classList.add('open');
+      card.setAttribute('aria-expanded', 'true');
+    }
+
+    sfx(isOpen ? 'close' : 'magic');
+  });
+
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      card.click();
+    }
+  });
+});
 
 /* ── Contact form ── */
-document.getElementById('cForm')?.addEventListener('submit',e=>{
-  e.preventDefault();sfx('open');
-  const btn=e.target.querySelector('.btn-submit');
-  btn.textContent='✓ Sent!';btn.style.background='#1a1a1a';btn.style.color='#fff';
-  setTimeout(()=>{btn.textContent='Send Message →';btn.style.background='';btn.style.color='';},2500);
-});
+// Contact form: send via EmailJS if configured, otherwise fallback to mailto
+(function(){
+  const EMAILJS_USER_ID = 'YOUR_EMAILJS_USER_ID'; // replace with your EmailJS user ID
+  const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // replace with your EmailJS service ID
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // replace with your EmailJS template ID
+  const OWNER_EMAIL = 'alifprendje@gmail.com'; // owner copy
+  const MY_EMAIL = 'your@email.com'; // replace with your email
+
+  function useEmailJS(){
+    return EMAILJS_USER_ID && EMAILJS_SERVICE_ID && EMAILJS_TEMPLATE_ID && EMAILJS_USER_ID.indexOf('YOUR')===-1;
+  }
+
+  // load EmailJS SDK dynamically if needed
+  function loadEmailJSSDK(cb){
+    if(window.emailjs) return cb();
+    const s=document.createElement('script');
+    s.src='https://cdn.emailjs.com/sdk/2.3.2/email.min.js';
+    s.onload=()=>{ if(window.emailjs && EMAILJS_USER_ID && EMAILJS_USER_ID.indexOf('YOUR')===-1) emailjs.init(EMAILJS_USER_ID); cb(); };
+    document.head.appendChild(s);
+  }
+
+  const cForm=document.getElementById('cForm');
+  cForm?.addEventListener('submit', async function(e){
+    e.preventDefault(); sfx('open');
+    const btn=this.querySelector('.btn-submit');
+    const name=document.getElementById('contactName')?.value.trim()||'Anonymous';
+    const email=document.getElementById('contactEmail')?.value.trim()||'';
+    const message=document.getElementById('contactMessage')?.value.trim()||'';
+    if(!message){ return; }
+    btn.disabled=true; btn.textContent='Sending…'; btn.style.background='#1a1a1a'; btn.style.color='#fff';
+
+    try{
+      if(useEmailJS()){
+        await new Promise((res,rej)=>loadEmailJSSDK(()=>res()));
+        const templateParams={
+          from_name: name,
+          from_email: email,
+          message: message,
+          to_email: OWNER_EMAIL
+        };
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      } else {
+        // fallback: open user's mail client with prefilled email to both addresses
+        const subject=encodeURIComponent('Contact from '+(name||'Visitor'));
+        const body=encodeURIComponent(`Name: ${name}%0AEmail: ${email}%0A%0A${message}`);
+        const mailto = `mailto:${MY_EMAIL},${OWNER_EMAIL}?subject=${subject}&body=${body}`;
+        window.location.href = mailto;
+      }
+      btn.textContent='✓ Sent!';
+      setTimeout(()=>{ btn.textContent='Send Message →'; btn.style.background=''; btn.style.color=''; btn.disabled=false; },2500);
+      this.reset();
+    }catch(err){
+      console.error('Send failed',err);
+      btn.textContent='Send Failed';
+      setTimeout(()=>{ btn.textContent='Send Message →'; btn.style.background=''; btn.style.color=''; btn.disabled=false; },2500);
+      alert('Gagal mengirim pesan. Periksa konfigurasi EmailJS atau coba email manual.');
+    }
+  });
+})();
+
+const commentNameInput=document.getElementById('commentName');
+const commentTextInput=document.getElementById('commentText');
+const commentButton=document.getElementById('commentPost');
+const commentsList=document.getElementById('commentsList');
+const COMMENT_STORAGE_KEY='portfolio-comments-v1';
+const COMMENT_LIFETIME_MS=3*24*60*60*1000;
+const DEFAULT_COMMENT={
+  name:'Visitor',
+  text:'Website-nya keren banget! Desainnya profesional dan animasinya unik. Sangat mengesankan.',
+  time:Date.now()
+};
+
+function nameToInitials(name){
+  return name.trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('') || 'V';
+}
+function formatCommentTime(date){
+  const now=new Date();
+  const diff=Math.floor((now - date) / 1000);
+  if(diff < 60) return 'Baru saja';
+  if(diff < 3600) return `${Math.floor(diff / 60)} menit lalu`;
+  if(diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
+  if(diff < 172800) return 'Kemarin';
+  return new Intl.DateTimeFormat('id-ID', { day:'numeric', month:'short', year:'numeric' }).format(date);
+}
+function readComments(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
+    return Array.isArray(saved) ? saved : [];
+  }catch{
+    return [];
+  }
+}
+function saveComments(comments){
+  localStorage.setItem(COMMENT_STORAGE_KEY, JSON.stringify(comments));
+}
+function pruneComments(comments){
+  const now=Date.now();
+  return comments.filter((comment)=>now - new Date(comment.time).getTime() < COMMENT_LIFETIME_MS);
+}
+function getComments(){
+  const comments=pruneComments(readComments());
+  if(!comments.length){
+    saveComments([DEFAULT_COMMENT]);
+    return [DEFAULT_COMMENT];
+  }
+  saveComments(comments);
+  return comments;
+}
+function createCommentCard(name, text, date){
+  const item=document.createElement('div'); item.className='comment-item';
+  const user=document.createElement('div'); user.className='comment-user';
+  const avatar=document.createElement('div'); avatar.className='comment-avatar';
+  const initials=document.createElement('span'); initials.className='comment-initials'; initials.textContent=nameToInitials(name);
+  avatar.appendChild(initials);
+  const nameEl=document.createElement('span'); nameEl.className='comment-name'; nameEl.textContent=name;
+  const dateEl=document.createElement('span'); dateEl.className='comment-date'; dateEl.textContent=formatCommentTime(date);
+  user.append(avatar, nameEl, dateEl);
+  const textEl=document.createElement('p'); textEl.className='comment-text'; textEl.textContent=text;
+  item.append(user, textEl);
+  return item;
+}
+function renderComments(){
+  if(!commentsList) return;
+  commentsList.innerHTML='';
+  const comments=getComments().sort((a,b)=>new Date(b.time)-new Date(a.time));
+  comments.forEach((comment)=>{
+    commentsList.appendChild(createCommentCard(comment.name, comment.text, new Date(comment.time)));
+  });
+}
+function postComment(){
+  if(!commentTextInput || !commentsList) return;
+  const text=commentTextInput.value.trim();
+  if(!text) return;
+  const name=(commentNameInput?.value.trim()) || 'Visitor';
+  const comments=getComments();
+  const nextComment={
+    name,
+    text,
+    time:Date.now()
+  };
+  const updatedComments=[nextComment, ...comments];
+  saveComments(updatedComments);
+  renderComments();
+  commentTextInput.value='';
+  if(commentNameInput) commentNameInput.value='';
+}
+renderComments();
+commentButton?.addEventListener('click', postComment);
+commentTextInput?.addEventListener('keypress', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); postComment(); } });
 
 /* ── Settings ── */
 document.getElementById('stBtn').addEventListener('click',()=>{document.getElementById('stBox').classList.toggle('open');sfx('click');});
