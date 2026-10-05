@@ -712,6 +712,7 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
 .soc-link:hover{border-color:var(--b2);color:var(--t);background:#111}
 .soc-link span{font-size:.68rem;color:var(--t3);transition:color .25s}
 .soc-link:hover span{color:var(--t2)}
+.comment-intro{font-size:.78rem;color:var(--t3);line-height:1.65;margin:-14px 0 18px;}
 .comment-box{
   background:#0c0c0c;border:1px solid var(--b);border-radius:11px;
   padding:13px 15px;color:var(--t);font-family:inherit;font-size:.87rem;outline:none;
@@ -731,6 +732,26 @@ section{min-height:100vh;max-width:1100px;margin:0 auto;padding:140px 52px 100px
   .comment-initials{font-size:.65rem;font-weight:700;color:var(--t);letter-spacing:.08em;text-transform:uppercase}
 .comment-date{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--t3);margin-left:auto}
 .comment-text{font-size:.84rem;color:var(--t2);line-height:1.65;font-weight:300}
+
+/* Comment actions */
+.comments-loading{
+  color:var(--t3);font-size:.78rem;padding:14px 2px;
+}
+.comment-actions{
+  display:flex;align-items:center;margin-top:12px;
+}
+.comment-like{
+  display:inline-flex;align-items:center;gap:6px;
+  border:1px solid var(--b);background:transparent;color:var(--t3);
+  border-radius:999px;padding:5px 10px;font-family:inherit;font-size:.7rem;
+  cursor:pointer;transition:all .2s;
+}
+.comment-like:hover{
+  border-color:var(--b2);color:var(--t);
+  background:rgba(255,255,255,.04);
+}
+.comment-like.liked{color:#fff;border-color:rgba(255,255,255,.25)}
+.comment-heart{font-size:.85rem;line-height:1}
 
 /* ═══════════════════════════════════
    SETTINGS
@@ -857,7 +878,7 @@ footer{
 
       <div class="hero-badge rv">
         <span class="hero-badge-dot"></span>
-        Available for work
+        Open for opportunities
       </div>
       <h1 class="hero-h1 rv d1">
         UI/UX &amp;<br>
@@ -865,15 +886,15 @@ footer{
         <span class="dim">Backend Dev</span>
       </h1>
       <p class="hero-p rv d2">
-        Merancang pengalaman yang intuitif dan membangun sistem yang solid. Dari wireframe hingga server — satu tangan, penuh presisi.
+        Merancang pengalaman digital yang intuitif sekaligus membangun backend yang rapi, aman, dan mudah dikembangkan — dari ide hingga implementasi.
       </p>
       <div class="hero-actions rv d3">
-        <a href="#portfolio" class="btn-solid">View Work ↗</a>
-        <a href="#contact" class="btn-ghost">Let's Talk</a>
+        <a href="#portfolio" class="btn-solid">Explore My Work ↗</a>
+        <a href="#contact" class="btn-ghost">Let's Connect</a>
       </div>
       <div class="hero-metas rv d4">
         <div class="hero-meta"><div class="hero-meta-num">3+</div><div class="hero-meta-label">Projects</div></div>
-        <div class="hero-meta"><div class="hero-meta-num">2</div><div class="hero-meta-label">Certificates</div></div>
+        <div class="hero-meta"><div class="hero-meta-num">2</div><div class="hero-meta-label">Certifications</div></div>
         <div class="hero-meta"><div class="hero-meta-num">5+</div><div class="hero-meta-label">Works Done</div></div>
       </div>
     </div>
@@ -925,10 +946,10 @@ footer{
     <div class="about-text-side" id="aboutText">
       <h2 class="about-h2">Alif Firmansari<br><strong>Prendje</strong></h2>
       <p class="about-p">
-        Saya adalah <strong>UI/UX Designer &amp; Backend Developer</strong> yang memahami kedua sisi — tampilan yang memukau dan sistem yang bekerja dengan andal. Berpengalaman membangun produk digital dari konsep hingga produksi.
+        Saya adalah <strong>UI/UX Designer &amp; Backend Developer</strong> yang senang menggabungkan desain yang intuitif dengan sistem yang terstruktur. Saya membangun antarmuka yang nyaman digunakan sekaligus backend yang dapat diandalkan.
       </p>
       <p class="about-p">
-        Dengan latar belakang PPLG dan kelas industri, saya menerapkan pendekatan terstruktur dalam setiap proyek — database, arsitektur, hingga antarmuka pengguna yang elegan.
+        Dengan latar belakang PPLG, saya terbiasa mengerjakan proyek dari sisi database, logika backend, hingga antarmuka pengguna. Setiap proyek saya kerjakan dengan fokus pada fungsi, struktur, dan pengalaman pengguna.
       </p>
 
       <div class="role-badges">
@@ -958,32 +979,32 @@ footer{
         </div>
       </div>
 
-      <div class="quote">"Designing experiences that work beautifully — from the first pixel to the last query."</div>
+      <div class="quote">"Building digital experiences that feel simple, useful, and well-crafted — from the first pixel to the last query."</div>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a href="#" class="btn-solid">Download CV</a>
-        <a href="#portfolio" class="btn-ghost">View Projects ↗</a>
+        <a href="#" class="btn-solid">Download Resume</a>
+        <a href="#portfolio" class="btn-ghost">View Selected Projects ↗</a>
       </div>
     </div>
 
   </div>
 
   <div class="stat-row">
-    <div class="stat-item rv d1"><div class="stat-num">3+</div><div class="stat-label">Projects Completed</div></div>
-    <div class="stat-item rv d2"><div class="stat-num">2</div><div class="stat-label">Certificates</div></div>
-    <div class="stat-item rv d3"><div class="stat-num">5+</div><div class="stat-label">Works Delivered</div></div>
+    <div class="stat-item rv d1"><div class="stat-num">3+</div><div class="stat-label">Projects Built</div></div>
+    <div class="stat-item rv d2"><div class="stat-num">2</div><div class="stat-label">Certifications</div></div>
+    <div class="stat-item rv d3"><div class="stat-num">5+</div><div class="stat-label">Projects & Work</div></div>
   </div>
 </section>
 
 <!-- ════════════════ PORTFOLIO ════════════════ -->
 <section id="portfolio">
   <div class="rv">
-    <h2 class="section-h2">Portfolio <strong>Showcase</strong></h2>
-    <p class="section-sub">Projects, certifications, and the technologies I work with.</p>
+    <h2 class="section-h2">Selected <strong>Work</strong></h2>
+    <p class="section-sub">A selection of projects, certifications, and technologies I use to turn ideas into useful digital products.</p>
   </div>
   <div class="rv d1">
     <div class="tabs">
       <button class="tab-btn active" data-tab="projects">Projects</button>
-      <button class="tab-btn" data-tab="certs">Certificates</button>
+      <button class="tab-btn" data-tab="certs">Certifications</button>
       <button class="tab-btn" data-tab="stack">Tech Stack</button>
     </div>
   </div>
@@ -994,9 +1015,9 @@ footer{
         <div class="proj-thumb"><img src="img/n.png
           " alt="OSIM" onerror="this.style.display='none'"></div>
         <div class="proj-body">
-          <span class="proj-tag">Web Test</span>
+          <span class="proj-tag">Web Application</span>
           <h3 class="proj-h3">Manga Reader </h3>
-          <p class="proj-p">Website manga no iklan no premium bebas untuk segala kategori dan di  batasi filter umur / usia .</p>
+          <p class="proj-p">Konsep platform pembaca manga dengan antarmuka yang sederhana, navigasi nyaman, serta fitur penyaringan konten berdasarkan kategori dan usia.</p>
           <div class="proj-foot"><span class="proj-meta">Figma · Prototype</span><div class="proj-actions"><a href="#" class="btn-sm">View Code</a><a href="Projeck/WEB MANGA/INDEX.HTML" class="btn-sm">Kunjungi Website</a></div></div>
         </div>
       </article>
@@ -1138,10 +1159,11 @@ footer{
       </div>
     </div>
     <div class="c-card comment-area rv d2">
-      <div class="c-card-h">Leave a Comment</div>
+      <div class="c-card-h">Share Your Thoughts</div>
+      <p class="comment-intro">Punya masukan, pertanyaan, atau sekadar ingin menyapa? Tulis komentarmu di sini. Komentar tersimpan secara permanen dan dapat dilihat oleh pengunjung lain.</p>
       <div class="form-field"><label>Name</label><input id="commentName" type="text" placeholder="Your name"></div>
-      <textarea id="commentText" class="comment-box" placeholder="Write a comment..."></textarea>
-      <button id="commentPost" class="btn-post">Post Comment</button>
+      <textarea id="commentText" class="comment-box" placeholder="Tulis komentar atau masukan tentang portfolio ini..."></textarea>
+      <button id="commentPost" class="btn-post">Publish Comment</button>
       <div id="commentsList"></div>
     </div>
   </div>
@@ -1413,95 +1435,225 @@ document.querySelectorAll('.tech-expand').forEach(card => {
   });
 })();
 
+/* ── Global Comments — Supabase ──
+   Comments are stored in Supabase, not localStorage.
+   Before deploying, replace SUPABASE_URL and SUPABASE_ANON_KEY.
+   Enable Anonymous Sign-Ins in Supabase Authentication.
+*/
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
 const commentNameInput=document.getElementById('commentName');
 const commentTextInput=document.getElementById('commentText');
 const commentButton=document.getElementById('commentPost');
 const commentsList=document.getElementById('commentsList');
-const COMMENT_STORAGE_KEY='portfolio-comments-v1';
-const COMMENT_LIFETIME_MS=3*24*60*60*1000;
-const DEFAULT_COMMENT={
-  name:'Visitor',
-  text:'Website-nya keren banget! Desainnya profesional dan animasinya unik. Sangat mengesankan.',
-  time:Date.now()
-};
+
+let supabaseClient=null;
+let currentUser=null;
 
 function nameToInitials(name){
-  return name.trim().split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('') || 'V';
+  return name.trim().split(/\s+/).filter(Boolean).slice(0,2)
+    .map(w=>w[0].toUpperCase()).join('') || 'V';
 }
+
 function formatCommentTime(date){
   const now=new Date();
-  const diff=Math.floor((now - date) / 1000);
-  if(diff < 60) return 'Baru saja';
-  if(diff < 3600) return `${Math.floor(diff / 60)} menit lalu`;
-  if(diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
-  if(diff < 172800) return 'Kemarin';
-  return new Intl.DateTimeFormat('id-ID', { day:'numeric', month:'short', year:'numeric' }).format(date);
+  const diff=Math.floor((now-date)/1000);
+  if(diff<60) return 'Baru saja';
+  if(diff<3600) return `${Math.floor(diff/60)} menit lalu`;
+  if(diff<86400) return `${Math.floor(diff/3600)} jam lalu`;
+  if(diff<172800) return 'Kemarin';
+  return new Intl.DateTimeFormat('id-ID',{
+    day:'numeric',month:'short',year:'numeric'
+  }).format(date);
 }
-function readComments(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(COMMENT_STORAGE_KEY) || '[]');
-    return Array.isArray(saved) ? saved : [];
-  }catch{
-    return [];
-  }
+
+function escapeCommentName(name){
+  return name.trim().slice(0,40) || 'Visitor';
 }
-function saveComments(comments){
-  localStorage.setItem(COMMENT_STORAGE_KEY, JSON.stringify(comments));
-}
-function pruneComments(comments){
-  const now=Date.now();
-  return comments.filter((comment)=>now - new Date(comment.time).getTime() < COMMENT_LIFETIME_MS);
-}
-function getComments(){
-  const comments=pruneComments(readComments());
-  if(!comments.length){
-    saveComments([DEFAULT_COMMENT]);
-    return [DEFAULT_COMMENT];
-  }
-  saveComments(comments);
-  return comments;
-}
-function createCommentCard(name, text, date){
-  const item=document.createElement('div'); item.className='comment-item';
-  const user=document.createElement('div'); user.className='comment-user';
-  const avatar=document.createElement('div'); avatar.className='comment-avatar';
-  const initials=document.createElement('span'); initials.className='comment-initials'; initials.textContent=nameToInitials(name);
+
+function createCommentCard(comment, likedByMe){
+  const item=document.createElement('article');
+  item.className='comment-item';
+
+  const user=document.createElement('div');
+  user.className='comment-user';
+
+  const avatar=document.createElement('div');
+  avatar.className='comment-avatar';
+
+  const initials=document.createElement('span');
+  initials.className='comment-initials';
+  initials.textContent=nameToInitials(comment.name);
   avatar.appendChild(initials);
-  const nameEl=document.createElement('span'); nameEl.className='comment-name'; nameEl.textContent=name;
-  const dateEl=document.createElement('span'); dateEl.className='comment-date'; dateEl.textContent=formatCommentTime(date);
-  user.append(avatar, nameEl, dateEl);
-  const textEl=document.createElement('p'); textEl.className='comment-text'; textEl.textContent=text;
-  item.append(user, textEl);
+
+  const nameEl=document.createElement('span');
+  nameEl.className='comment-name';
+  nameEl.textContent=comment.name;
+
+  const dateEl=document.createElement('span');
+  dateEl.className='comment-date';
+  dateEl.textContent=formatCommentTime(new Date(comment.created_at));
+
+  user.append(avatar,nameEl,dateEl);
+
+  const textEl=document.createElement('p');
+  textEl.className='comment-text';
+  textEl.textContent=comment.text;
+
+  const actions=document.createElement('div');
+  actions.className='comment-actions';
+
+  const likeBtn=document.createElement('button');
+  likeBtn.type='button';
+  likeBtn.className=`comment-like ${likedByMe?'liked':''}`;
+  likeBtn.innerHTML=`<span class="comment-heart">${likedByMe?'♥':'♡'}</span><span>${comment.like_count || 0}</span>`;
+  likeBtn.setAttribute('aria-label', likedByMe ? 'Unlike comment' : 'Like comment');
+
+  likeBtn.addEventListener('click',()=>toggleCommentLike(comment.id,likeBtn));
+
+  actions.appendChild(likeBtn);
+  item.append(user,textEl,actions);
   return item;
 }
-function renderComments(){
-  if(!commentsList) return;
+
+async function loadComments(){
+  if(!commentsList || !supabaseClient) return;
+
+  commentsList.innerHTML='<div class="comments-loading">Loading comments...</div>';
+
+  const {data:comments,error}=await supabaseClient
+    .from('comments')
+    .select('id,name,text,created_at,comment_likes(count)')
+    .order('created_at',{ascending:false});
+
+  if(error){
+    console.error('Load comments failed:',error);
+    commentsList.innerHTML='<div class="comments-loading">Komentar belum dapat dimuat. Periksa koneksi database.</div>';
+    return;
+  }
+
+  const {data:myLikes}=await supabaseClient
+    .from('comment_likes')
+    .select('comment_id')
+    .eq('user_id',currentUser.id);
+
+  const likedIds=new Set((myLikes||[]).map(x=>x.comment_id));
+
   commentsList.innerHTML='';
-  const comments=getComments().sort((a,b)=>new Date(b.time)-new Date(a.time));
-  comments.forEach((comment)=>{
-    commentsList.appendChild(createCommentCard(comment.name, comment.text, new Date(comment.time)));
+
+  if(!comments?.length){
+    commentsList.innerHTML='<div class="comments-loading">Belum ada komentar. Jadilah yang pertama memberi masukan.</div>';
+    return;
+  }
+
+  comments.forEach(comment=>{
+    comment.like_count=comment.comment_likes?.[0]?.count || 0;
+    commentsList.appendChild(createCommentCard(comment,likedIds.has(comment.id)));
   });
 }
-function postComment(){
-  if(!commentTextInput || !commentsList) return;
+
+async function postComment(){
+  if(!commentTextInput || !supabaseClient || !currentUser) return;
+
   const text=commentTextInput.value.trim();
   if(!text) return;
-  const name=(commentNameInput?.value.trim()) || 'Visitor';
-  const comments=getComments();
-  const nextComment={
+
+  const name=escapeCommentName(commentNameInput?.value || 'Visitor');
+
+  commentButton.disabled=true;
+  commentButton.textContent='Publishing...';
+
+  const {error}=await supabaseClient.from('comments').insert({
     name,
     text,
-    time:Date.now()
-  };
-  const updatedComments=[nextComment, ...comments];
-  saveComments(updatedComments);
-  renderComments();
-  commentTextInput.value='';
-  if(commentNameInput) commentNameInput.value='';
+    user_id:currentUser.id
+  });
+
+  if(error){
+    console.error('Post comment failed:',error);
+    alert('Komentar gagal dipublikasikan. Silakan coba lagi.');
+  }else{
+    commentTextInput.value='';
+    if(commentNameInput) commentNameInput.value='';
+    await loadComments();
+  }
+
+  commentButton.disabled=false;
+  commentButton.textContent='Publish Comment';
 }
-renderComments();
-commentButton?.addEventListener('click', postComment);
-commentTextInput?.addEventListener('keypress', e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); postComment(); } });
+
+async function toggleCommentLike(commentId,button){
+  if(!supabaseClient || !currentUser) return;
+
+  button.disabled=true;
+
+  const {data:existing,error:findError}=await supabaseClient
+    .from('comment_likes')
+    .select('comment_id')
+    .eq('comment_id',commentId)
+    .eq('user_id',currentUser.id)
+    .maybeSingle();
+
+  if(findError){
+    console.error('Like lookup failed:',findError);
+    button.disabled=false;
+    return;
+  }
+
+  if(existing){
+    const {error}=await supabaseClient
+      .from('comment_likes')
+      .delete()
+      .eq('comment_id',commentId)
+      .eq('user_id',currentUser.id);
+
+    if(error) console.error('Unlike failed:',error);
+  }else{
+    const {error}=await supabaseClient
+      .from('comment_likes')
+      .insert({comment_id:commentId,user_id:currentUser.id});
+
+    if(error) console.error('Like failed:',error);
+  }
+
+  await loadComments();
+  button.disabled=false;
+}
+
+async function initComments(){
+  if(!window.supabase || SUPABASE_URL.startsWith('YOUR_')){
+    commentsList.innerHTML='<div class="comments-loading">Database komentar belum dikonfigurasi.</div>';
+    return;
+  }
+
+  supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+  const {data:{user},error}=await supabaseClient.auth.getUser();
+  if(error || !user){
+    const {data,error:signInError}=await supabaseClient.auth.signInAnonymously();
+    if(signInError){
+      console.error('Anonymous sign-in failed:',signInError);
+      commentsList.innerHTML='<div class="comments-loading">Tidak dapat mengaktifkan sistem komentar.</div>';
+      return;
+    }
+    currentUser=data.user;
+  }else{
+    currentUser=user;
+  }
+
+  await loadComments();
+}
+
+commentButton?.addEventListener('click',postComment);
+commentTextInput?.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && !e.shiftKey){
+    e.preventDefault();
+    postComment();
+  }
+});
+
+initComments();
 
 /* ── Settings ── */
 document.getElementById('stBtn').addEventListener('click',()=>{document.getElementById('stBox').classList.toggle('open');sfx('click');});
@@ -1548,6 +1700,7 @@ document.querySelectorAll('a,button,[role=button],.proj-card,.stat-item,.soc-lin
   el.addEventListener('mouseenter',()=>sfx('hover'));
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://www.youtube.com/iframe_api" async></script>
 </body>
 </html>
